@@ -1,0 +1,68 @@
+@startuml
+rectangle Agency
+storage Name as AName
+storage "Budget" as ABudget
+AName -- Agency
+ABudget -- Agency
+rectangle NPO
+storage "Owner" as NPOOwner
+storage "Name" as NPOName
+NPOOwner -right- NPO
+NPOName -- NPO
+rectangle Grant
+storage "Date Posted" as PDate
+storage "Close Date" as CDate
+storage "Award Ceiling" as AwardCeiling
+storage "Award Floor" as AwardFloor
+storage "Opportunity Number" as ONumber
+storage Title as GTitle
+storage Categories as GCategories
+storage Status as GStatus
+Storage "Require Matching" as GRequireMatching
+PDate -left-- Grant
+CDate --up- Grant
+AwardCeiling --down- Grant
+AwardFloor --down- Grant
+ONumber --up- Grant
+GTitle --up- Grant
+GCategories --- Grant
+GStatus -right-- Grant
+GRequireMatching -- Grant
+rectangle User
+storage "First Name" as UFirstName 
+storage "Last Name" as ULastName 
+storage "Password Hash" as UPassword 
+storage "Username" as UUsername 
+storage "Role" as URole 
+storage "Salary" as USalary
+storage "Date of Birth" as UDateOfBirth
+UFirstName -- User
+ULastName -up- User
+UPassword -- User
+UUsername -- User
+URole -up- User
+UDateOfBirth -up- User
+USalary -right- User
+Hexagon Posts
+Agency --[#Blue]-- Posts : 1
+Posts ==[#Blue]== Grant : N
+Hexagon Receive
+storage "Receive Date" as RReceiveDate
+storage "Authorized By" as RAuthorizedBy
+RReceiveDate -left- Receive
+RAuthorizedBy -right- Receive
+Receive ==[#Blue]= Grant : N
+Hexagon "Is Part of" as IsPartOfAgency
+User =right[#Blue]= IsPartOfAgency : 1
+IsPartOfAgency -right[#Blue]- Agency : N
+NPO -down[#Blue]- Receive : 1
+Hexagon "Is Part of" as IsPartOfNPO
+User =[#Blue]= IsPartOfNPO : 1
+IsPartOfNPO --[#Blue]-- NPO : N
+Hexagon "Has Category" as HasCategory
+NPO -[#Blue]- HasCategory : M
+storage Category
+Category -- HasCategory
+HasCategory -[#Blue]- Grant : N
+User -[#Blue]- Receive : 1
+@enduml
